@@ -1,0 +1,875 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.pagination-btn {
+    padding: 10px 20px;
+    background-color: var(--roupas-primaria);
+    color: var(--cor-clara);
+    border: 2px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 100px;
+    font-weight: 500;
+}
+
+.pagination-btn:disabled {
+    background-color: var(--cor-sombra);
+    cursor: not-allowed;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    border-color: currentColor;
+    background: transparent;
+}
+
+.page-info {
+    font-size: 16px;
+    color: var(--cor-texto);
+}
+
+.products {
+    display: none;
+}
+
+.products.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+:root {
+    /* Cores base */
+    --cor-destaque-infantil: #00B894;
+    --cor-clara: #FFFFFF;
+    --cor-texto: #333333;
+    --cor-texto-claro: #666666;
+    
+    /* Cores para Semi Joias */
+    --semi-joias-primaria: #D4AF37; /* Dourado */
+    --semi-joias-secundaria: #F5E6C8; /* Dourado claro */
+    --semi-joias-destaque: #A67C52; /* Bronze */
+    --semi-joias-fundo: #FFF9E6; /* Fundo amarelado claro */
+    
+    /* Cores para Roupas */
+    --roupas-primaria: #BD5E78; /* Rosa */
+    --roupas-secundaria: #f589dd; /* Rosa claro */
+    --roupas-destaque: #BC5EAF; /* Rosa mais forte */
+    --roupas-fundo: #f7f7f7; /* Fundo rosado claro */
+    
+    /* Cores para Tecnologia */
+    --tech-primaria: #0984E3; /* Azul */
+    --tech-secundaria: #D0EBFF; /* Azul claro */
+    --tech-destaque: #074B83; /* Azul escuro */
+    --tech-fundo: #F0F8FF; /* Fundo azulado claro */
+    
+    /* Cores gerais */
+    --cor-sombra: rgba(0, 0, 0, 0.1);
+    --cor-sombra-forte: rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+body {
+    color: var(--cor-texto);
+    background-color: var(--semi-joias-fundo); /* Default */
+}
+
+/* Estilos específicos para cada página */
+body[data-page="home"] {
+    background-color: var(--semi-joias-fundo);
+}
+
+body[data-page="semi-joias"] {
+    background-color: var(--semi-joias-fundo);
+}
+
+body[data-page="roupas"] {
+    background-color: var(--roupas-fundo);
+}
+
+body[data-page="tecnologia"] {
+    background-color: var(--tech-fundo);
+}
+
+body[data-page="contato"] {
+    background-color: var(--semi-joias-fundo);
+}
+body[data-page="roupas"] header {
+ background: linear-gradient(135deg, #BC5EAF, #BD5E78) !important;
+}
+header {
+    background: linear-gradient(135deg, var(--semi-joias-primaria), var(--semi-joias-secundaria));
+    padding: 20px 0;
+    box-shadow: 0 2px 10px var(--cor-sombra);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cor-clara);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+}
+
+.logo span {
+    color: var(--semi-joias-primaria);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+}
+
+.menu li {
+    margin-left: 30px;
+}
+
+.menu a {
+    color: var(--cor-clara);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Estilos do menu hamburguer */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--cor-clara);
+    margin: 4px 0;
+    transition: all 0.3s ease;
+}
+
+/* Overlay para o menu móvel */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--cor-clara);
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+/* Botões temáticos */
+.btn-semi-joias {
+    background-color: var(--semi-joias-primaria);
+    color: var(--cor-clara);
+}
+
+.btn-semi-joias:hover {
+    background-color: var(--semi-joias-destaque);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px var(--cor-sombra);
+}
+
+.btn-roupas {
+    background-color: var(--roupas-primaria);
+    color: var(--cor-clara);
+}
+
+.btn-roupas:hover {
+    background-color: var(--roupas-destaque);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px var(--cor-sombra);
+}
+
+.btn-tech {
+    background-color: var(--tech-primaria);
+    color: var(--cor-clara);
+}
+
+.btn-tech:hover {
+    background-color: var(--tech-destaque);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px var(--cor-sombra);
+}
+
+/* Section Titles */
+.section-title {
+    text-align: center;
+    margin: 60px 0 40px;
+    font-size: 36px;
+    position: relative;
+}
+
+/* Títulos temáticos */
+.title-semi-joias {
+    color: var(--semi-joias-primaria);
+}
+
+.title-roupas {
+    color: var(--roupas-primaria);
+}
+
+.title-tech {
+    color: var(--tech-primaria);
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    margin: 15px auto 0;
+}
+
+.title-semi-joias::after {
+    background-color: var(--semi-joias-secundaria);
+}
+
+.title-roupas::after {
+    background-color: var(--roupas-secundaria);
+}
+
+.title-tech::after {
+    background-color: var(--tech-secundaria);
+}
+
+/* Filtros */
+.category-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.category-btn {
+    padding: 10px 25px;
+    background-color: var(--cor-clara);
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+/* Filtros para Semi Joias */
+.filters-semi-joias .category-btn:hover, 
+.filters-semi-joias .category-btn.active {
+    background-color: var(--semi-joias-primaria);
+    color: var(--cor-clara);
+    border-color: var(--semi-joias-primaria);
+}
+
+/* Filtros para Roupas */
+.filters-roupas .category-btn:hover, 
+.filters-roupas .category-btn.active {
+    background-color: var(--roupas-primaria);
+    color: var(--cor-clara);
+    border-color: var(--roupas-primaria);
+}
+
+/* Filtros específicos para gênero */
+.clothing-filters .category-btn[data-category="mulher"]:hover, 
+.clothing-filters .category-btn[data-category="mulher"].active {
+    background-color: var(--roupas-primaria);
+    border-color: var(--roupas-primaria);
+}
+
+.clothing-filters .category-btn[data-category="homem"]:hover, 
+.clothing-filters .category-btn[data-category="homem"].active {
+    background-color: var(--tech-primaria);
+    border-color: var(--tech-primaria);
+}
+
+.clothing-filters .category-btn[data-category="crianca"]:hover, 
+.clothing-filters .category-btn[data-category="crianca"].active {
+    background-color: #00B894;
+    border-color: #00B894;
+}
+
+/* Produtos */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 60px;
+    padding: 0 1rem;
+}
+
+.product-card {
+   
+    background-color: var(--cor-clara);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--cor-sombra);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.product-image {
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.1);
+}
+
+.product-badge {
+    position: absolute;
+    background: linear-gradient(45deg, #ff4757, #ff6b81);
+    box-shadow: 0 2px 8px rgba(255,71,87,0.3);
+    top: 10px;
+    right: 10px;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+.product-badge.mulher {
+    background-color: var(--roupas-primaria);
+}
+
+.product-badge.homem {
+    background-color: var(--tech-primaria);
+}
+
+.product-badge.crianca {
+    background-color: #00B894;
+}
+
+.product-badge.semi-joias {
+    background-color: var(--semi-joias-primaria);
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--cor-texto);
+}
+
+.product-price {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.price-semi-joias {
+    color: var(--semi-joias-primaria);
+}
+
+.price-roupas {
+    color: var(--roupas-primaria);
+}
+
+.price-tech {
+    color: var(--tech-primaria);
+}
+
+.product-old-price {
+    font-size: 16px;
+    color: var(--cor-texto-claro);
+    text-decoration: line-through;
+    margin-right: 10px;
+}
+
+.product-description {
+    font-size: 14px;
+    color: var(--cor-texto-claro);
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-small {
+    padding: 8px 15px;
+    font-size: 14px;
+}
+.btn {
+position: relative;
+overflow: hidden;
+}
+.btn:after {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+background: rgba(255,255,255,0.2);
+border-radius: 50%;
+transform: translate(-50%, -50%);
+transition: width 0.3s, height 0.3s;
+}
+.btn:hover:after {
+    width: 200px;
+    height: 200px;
+}
+.btn-outline {
+    background-color: transparent;
+    color: var(--cor-texto);
+}
+
+.btn-outline-semi-joias {
+    border: 1px solid var(--semi-joias-primaria);
+    color: var(--semi-joias-primaria);
+}
+
+.btn-outline-semi-joias:hover {
+    background-color: var(--semi-joias-primaria);
+    color: white;
+}
+
+.btn-outline-roupas {
+    border: 1px solid var(--roupas-primaria);
+    color: var(--roupas-primaria);
+}
+
+.btn-outline-roupas:hover {
+    background-color: var(--roupas-primaria);
+    color: white;
+}
+
+.no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 40px;
+    color: var(--cor-texto-claro);
+    font-size: 18px;
+}
+
+/* Páginas */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Hero Roupas */
+.hero-roupas {
+    background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.hero-roupas::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hero-roupas-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-roupas h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero Tecnologia */
+.hero-tech {
+    background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.hero-tech::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-tech-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.carousel {
+position: relative;
+width: 100%;
+height: 400px;
+overflow: hidden;
+}
+
+.carousel-slide {
+position: absolute;
+top: 0;
+left: 100%;
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+transition: all 0.5s ease;
+opacity: 0;
+z-index: 0;
+}
+
+.carousel-slide.active {
+left: 0;
+opacity: 1;
+z-index: 1;
+}
+
+.carousel-controls {
+position: absolute;
+bottom: 30px;
+gap: 8px;
+}
+
+.carousel-controls button {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+padding: 0;
+background: rgba(255,255,255,0.5);
+transition: all 0.3s;
+}
+
+.carousel-controls button.active {
+background: var(--cor-clara);
+width: 24px;
+border-radius: 8px;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: var(--cor-clara);
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-column h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--semi-joias-primaria);
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: var(--semi-joias-primaria);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    border-radius: 50%;
+    color: var(--cor-clara);
+    text-align: center;
+    line-height: 40px;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--semi-joias-primaria);
+    transform: translateY(-3px);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+    font-size: 14px;
+    color: #999;
+}
+
+/* Cards de Contato */
+.contact-card {
+    background-color: var(--cor-clara);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--cor-sombra);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px var(--cor-sombra-forte);
+}
+
+.contact-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.icon-semi-joias {
+    color: var(--semi-joias-primaria);
+}
+
+.icon-roupas {
+    color: var(--roupas-primaria);
+}
+
+.icon-tech {
+    color: var(--tech-primaria);
+}
+
+.contact-card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: var(--cor-texto);
+}
+
+.contact-card p, .contact-card a {
+    color: var(--cor-texto-claro);
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.contact-card a:hover {
+    color: var(--semi-joias-primaria);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+    
+    .menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: linear-gradient(135deg, var(--semi-joias-primaria), var(--semi-joias-secundaria));
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+    
+    .menu.active {
+        right: 0;
+    }
+    
+    .menu li {
+        margin: 15px 0;
+        margin-left: 0;
+    }
+    
+    /* Estilo para quando o menu está aberto */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+    
+    .hero h1, .hero-roupas h1, .hero-tech h1 {
+        font-size: 36px;
+    }
+    
+    .hero p {
+        font-size: 18px;
+    }
+    
+    .section-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    }
+    
+    .category-filters, .clothing-filters {
+        gap: 8px;
+    }
+    
+    .category-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
