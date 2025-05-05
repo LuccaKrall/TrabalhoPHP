@@ -2905,7 +2905,17 @@
 
     <!-- Página de Tecnologia -->
     <section id="tecnologia" class="page">
-        <?php include('Scriptphp/produtos_consulta.php'); ?>
+    <div class="hero-tech">
+            <div class="hero-tech-content">
+                <h1>Tecnologia e Inovação</h1>
+                <p>Descubra nossos produtos tecnológicos de última geração</p>
+            </div>
+        </div>
+    
+        <div class="container">
+            <h2 class="section-title title-tech">Nossos Produtos</h2>
+            <div class="products">    
+            <?php include('Scriptphp/produtos_consulta.php'); ?>
     </section>
 
     <!-- Página de Contato -->
