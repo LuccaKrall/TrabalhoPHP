@@ -17,18 +17,18 @@ $resultado = $conexao->query($sql);
 
 foreach($resultado as $linha) {
     echo '
-        <tr>
-            <td>'.$linha['ID'].'</td>
-            <td><img src="'.$linha['imagens'].'" alt="'.$linha['NOME'].'" class="product-image"></td>
-            <td>'.$linha['NOME'].'</td>
-            <td>Anéis</td>
-            <td>15</td>
-            <td>R$'.$linha['PRECO'].'</td>
-            <td class="action-btns">
-                <button class="btn btn-edit"><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-delete"><i class="fas fa-trash"></i> Excluir</button>
-            </td>
-        </tr>
-    ';
+    <tr>
+        <td>'.$linha['ID'].'</td>
+        <td><img src="'.$linha['imagens'].'" alt="'.$linha['NOME'].'" class="product-image"></td>
+        <td>'.$linha['NOME'].'</td>
+        <td>Anéis</td>
+        <td>15</td>
+        <td>R$'.$linha['PRECO'].'</td>
+        <td>
+            <a href="Scriptphp/admin_Delete.php?nome='.$linha['NOME'].'" class="btn btn-danger">🗑</a>
+            <a href="aluno_alterar.php?nome='.$linha['NOME'].'" class="btn btn-primary">✏️</a>
+        </td>
+    </tr>
+';
 }
 ?>
