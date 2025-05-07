@@ -1,0 +1,36 @@
+-- Criação da tabela 'categorias'
+CREATE TABLE categorias (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL
+);
+
+-- Criação da tabela 'produtos' com campos adicionais (imagem e descricao)
+CREATE TABLE produtos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    preco DECIMAL(10, 2) NOT NULL,
+    categoria_id INT NOT NULL,
+    imagem VARCHAR(255),
+    descricao VARCHAR(255),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+-- Criação da tabela 'vendas'
+CREATE TABLE vendas (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    data_venda DATETIME NOT NULL
+);
+
+-- Criação da tabela 'vendas_itens'
+CREATE TABLE vendas_itens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    venda_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    FOREIGN KEY (venda_id) REFERENCES vendas(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);
+
+-- Comentários adicionais para esclarecer relacionamentos
+ALTER TABLE produtos COMMENT = 'Relacionamento: 1 categoria → N produtos';
+ALTER TABLE vendas_itens COMMENT = 'Relacionamento: 1 venda → N itens / 1 produto → N itens';
